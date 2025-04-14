@@ -1,0 +1,15 @@
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\bin\Debug\net8.0\textRPG.exe
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\bin\Debug\net8.0\textRPG.deps.json
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\bin\Debug\net8.0\textRPG.runtimeconfig.json
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\bin\Debug\net8.0\textRPG.dll
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\bin\Debug\net8.0\textRPG.pdb
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\textRPG.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\textRPG.AssemblyInfoInputs.cache
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\textRPG.AssemblyInfo.cs
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\textRPG.csproj.CoreCompileInputs.cache
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\textRPG.sourcelink.json
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\textRPG.dll
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\refint\textRPG.dll
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\textRPG.pdb
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\textRPG.genruntimeconfig.cache
+C:\Users\admin\Desktop\Sparta_Camp\MainCamp\textRPG_KJD\textRPG\textRPG\obj\Debug\net8.0\ref\textRPG.dll
