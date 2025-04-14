@@ -14,6 +14,7 @@ void StartNaming()
     }
     else
     {
+        Console.Clear();
         Console.WriteLine("잘못된 입력입니다.\n");
         StartNaming();
     }
@@ -21,7 +22,7 @@ void StartNaming()
 void StartScene()
 {
     int num = 0;
-    Console.WriteLine("이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.\n");
+    Console.WriteLine("환영합니다! {0} 님. 이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.\n", player1.name);
     Console.WriteLine("1. 상태보기 \n2. 인벤토리 \n3. 상점 \n");
     Console.WriteLine("원하시는 행동을 입력해주세요");
     string input = Console.ReadLine();
@@ -43,6 +44,7 @@ void StartScene()
     }
     else
     {
+        Console.Clear();
         Console.WriteLine("잘못된 입력입니다.\n");
         StartScene();
     }
