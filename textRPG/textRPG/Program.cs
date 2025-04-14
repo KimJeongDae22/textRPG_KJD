@@ -1,11 +1,11 @@
 ﻿using System;
 
 Player player1 = new Player();
+Item[] invenTory = new Item[10];
 int num = 0;
 Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
 
 StartNaming();
-
 StartScene();
 void StartNaming()
 {
@@ -40,6 +40,8 @@ void StartScene()
                 // 상태보기
                 break;
             case 2:
+                Console.Clear();
+                Inventory();
                 // 인벤토리
                 break;
             case 3:
@@ -82,6 +84,45 @@ void Information()
         Information();
     }
 }
+void Inventory()
+{
+    Console.WriteLine("-인벤토리-\n보유 중인 아이템을 관리할 수 있습니다.\n");
+    Console.WriteLine("\n[아이템 목록]\n");
+    for (int i = 0; i < invenTory.Length; i++)
+    {
+        if (invenTory[i].name != null)
+        {
+            Console.WriteLine("- ");
+            if (invenTory[i].isEquip == true)   // 장착 시 [E] 글귀 생성
+                Console.Write("[E]");
+            Console.Write("{0}      | ", invenTory[i].name);
+            if (invenTory[i].armor == true)
+                Console.Write("| 방어력 +{0} | ", invenTory[i].addPower);
+            if (invenTory[i].weapon == true)
+                Console.Write("| 공격력 +{0} | ", invenTory[i].addPower);
+            Console.Write("| {0}", invenTory[i].itemInfo);
+        }
+    }
+    Console.WriteLine("\n1. 장착 관리\n2. 나가기");
+    Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+    string input = Console.ReadLine();
+    int num = 0;
+    if (num >= 1 && num <= 2)
+    {
+        switch (num)
+        {
+            case 1:
+                Console.Clear();
+                // 장착 관리
+                break;
+            case 2:
+                Console.Clear();
+                StartScene();
+                // 시작 화면
+                break;
+        }
+    }
+}
 struct Player()
 {
     public int level = 1;
@@ -91,6 +132,15 @@ struct Player()
     public int armPower = 5;
     public int hp = 100;
     public int gold = 1500;
+}
+struct Item()
+{
+    public string name;
+    public bool isEquip;    // 장착여부
+    public bool armor;      // 무기여부
+    public bool weapon;     // 방어구여부
+    public int addPower;    // (무기면 공격력, 방어구면 방어력) 추가 상승치
+    public string itemInfo;
 }
 
 
