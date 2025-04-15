@@ -1,11 +1,10 @@
-﻿using System;
-
-Player player1 = new Player();
+﻿Player player1 = new Player();
 Item[] invenTory = new Item[20];
+bool[] shop_Soldout = new bool[6];
 int num = 0;
 Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
 
-AddItem(1, 0);  //테스트용 장비 지급
+//AddItem(1, 0);  //테스트용 장비 지급
 StartNaming();
 StartScene();
 void StartNaming()
@@ -142,7 +141,7 @@ void EquipManage()
     {
         if (invenTory[i].name != null)
         {
-            Console.Write("- {0}. ", i+1);
+            Console.Write("- {0}. ", i + 1);
             if (invenTory[i].isEquip == true)   // 장착 시 [E] 글귀 생성
                 Console.Write("[E]");
             Console.Write("{0}  ", invenTory[i].name);
@@ -179,40 +178,43 @@ void EquipManage()
 }
 void Shop()
 {
-    Console.WriteLine("-상점-\n보유 중인 아이템을 확인합니다.\n");
+    Console.WriteLine("-상점-\n필요한 아이템을 구매할 수 있는 상점입니다.\n");
     Console.WriteLine("\n[보유 골드]\n{0} G\n", player1.gold);
     Console.WriteLine("\n[아이템 목록]\n");
     int[] price = new int[6];
     for (int i = 0; i < 6; i++)
     {
-        switch(i)
+        switch (i)
         {
             case 0:
-                Console.WriteLine("- 수련자 갑옷     | 방어력 +5 | 수련에 도움을 주는 갑옷입니다.    | 1000 G");
+                Console.Write("- 수련자 갑옷     | 방어력 +5 | 수련에 도움을 주는 갑옷입니다.    | ");
                 price[i] = 1000;
                 break;
             case 1:
-                Console.WriteLine("- 무쇠갑옷     | 방어력 +9 | 무쇠로 만들어져 튼튼한 갑옷입니다.    | 2000 G");
+                Console.Write("- 무쇠갑옷     | 방어력 +9 | 무쇠로 만들어져 튼튼한 갑옷입니다.    | ");
                 price[i] = 2000;
                 break;
             case 2:
-                Console.WriteLine("- 스파르타의 갑옷 | 방어력 +15 | 스파르타의 전사들이 사용했다고 전해지는 전설의 갑옷입니다.    | 3500 G");
+                Console.Write("- 스파르타의 갑옷 | 방어력 +15 | 스파르타의 전사들이 사용했다고 전해지는 전설의 갑옷입니다.    | ");
                 price[i] = 3500;
                 break;
             case 3:
-                Console.WriteLine("- 낡은 검     | 공격력 +2 | 쉽게 찾을 수 있는 낡은 검입니다.    | 600 G");
+                Console.Write("- 낡은 검     | 공격력 +2 | 쉽게 찾을 수 있는 낡은 검입니다.    | ");
                 price[i] = 600;
                 break;
             case 4:
-                Console.WriteLine("- 청동 도끼     | 공격력 +5 | 옛날부터 전해내려오는 사용감있는 도끼입니다.    | 1500 G");
+                Console.Write("- 청동 도끼     | 공격력 +5 | 옛날부터 전해내려오는 사용감있는 도끼입니다.    | ");
                 price[i] = 1500;
                 break;
             case 5:
-                Console.WriteLine("- 스파르타의 창     | 공격력 +9 | 스파르타의 전사들이 사용했다고 전해지는 전설의 창입니다.    | 3000 G");
+                Console.Write("- 스파르타의 창     | 공격력 +9 | 스파르타의 전사들이 사용했다고 전해지는 전설의 창입니다.    | ");
                 price[i] = 3000;
                 break;
-
         }
+        if (shop_Soldout[i] == false)
+            Console.WriteLine("{0} G", price[i]);
+        else
+            Console.WriteLine("구매 완료");
     }
     Console.WriteLine("\n1. 아이템 구매\n0. 나가기");
     Console.WriteLine("\n원하시는 행동을 입력해주세요.");
@@ -222,6 +224,7 @@ void Shop()
     if (num == 1)
     {
         Console.Clear();
+        BuyItem();
         // 아이템 구매창 이동
     }
     else if (num == 0)
@@ -234,12 +237,103 @@ void Shop()
     {
         Console.Clear();
         Console.WriteLine("잘못된 입력입니다.\n");
-        Inventory();
+        Shop();
+    }
+}
+void BuyItem()
+{
+    Console.WriteLine("-상점_아이템 구매-\n필요한 아이템을 구매할 수 있는 상점입니다.\n");
+    Console.WriteLine("\n[보유 골드]\n{0} G\n", player1.gold);
+    Console.WriteLine("\n[아이템 목록]\n");
+    int[] price = new int[6];
+    for (int i = 0; i < 6; i++)
+    {
+        switch (i)
+        {
+            case 0:
+                Console.Write("- {0} 수련자 갑옷     | 방어력 +5 | 수련에 도움을 주는 갑옷입니다.    | ", i + 1);
+                price[i] = 1000;
+                break;
+            case 1:
+                Console.Write("- {0} 무쇠갑옷     | 방어력 +9 | 무쇠로 만들어져 튼튼한 갑옷입니다.    | ", i + 1);
+                price[i] = 2000;
+                break;
+            case 2:
+                Console.Write("- {0} 스파르타의 갑옷 | 방어력 +15 | 스파르타의 전사들이 사용했다고 전해지는 전설의 갑옷입니다.    | ", i + 1);
+                price[i] = 3500;
+                break;
+            case 3:
+                Console.Write("- {0} 낡은 검     | 공격력 +2 | 쉽게 찾을 수 있는 낡은 검입니다.    | ", i + 1);
+                price[i] = 600;
+                break;
+            case 4:
+                Console.Write("- {0} 청동 도끼     | 공격력 +5 | 옛날부터 전해내려오는 사용감있는 도끼입니다.    | ", i + 1);
+                price[i] = 1500;
+                break;
+            case 5:
+                Console.Write("- {0} 스파르타의 창     | 공격력 +9 | 스파르타의 전사들이 사용했다고 전해지는 전설의 창입니다.    | ", i + 1);
+                price[i] = 3000;
+                break;
+        }
+        if (shop_Soldout[i] == false)
+            Console.WriteLine("{0} G", price[i]);
+        else
+            Console.WriteLine("구매 완료");
+    }
+    Console.WriteLine("\n0. 나가기");
+    Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+    string input = Console.ReadLine();
+    int num = 0;
+    num = int.Parse(input);
+    if (num >= 1 && num <= 6)
+    {
+        if (shop_Soldout[num - 1] == true)
+        {
+            Console.Clear();
+            Console.WriteLine("이미 구매한 아이템입니다.\n");
+            BuyItem();
+        }
+        else if (player1.gold < price[num - 1])
+        {
+            Console.Clear();
+            Console.WriteLine("골드가 부족합니다.\n");
+            BuyItem();
+        }
+        else
+        {
+            Console.Clear();
+            Console.WriteLine("구매를 완료했습니다..\n");
+            int emptyInvenNum = 0;
+            for (int i = 0; i < invenTory.Length; i++)
+            {
+                if (invenTory[i].name == null)
+                {
+                    emptyInvenNum = i;
+                    break;
+                }
+            }
+            AddItem(num, emptyInvenNum);
+            player1.gold -= price[num - 1];
+            shop_Soldout[num - 1] = true;
+            BuyItem();
+        }
+
+    }
+    else if (num == 0)
+    {
+        Console.Clear();
+        Shop();
+    }
+    else
+    {
+        Console.Clear();
+        Console.WriteLine("잘못된 입력입니다.\n");
+        Shop();
     }
 }
 void AddItem(int itemCode, int invenNum)
 {
-    switch(itemCode)
+    switch (itemCode)
     {
         case 1:
             invenTory[invenNum].name = "수련자 갑옷";
