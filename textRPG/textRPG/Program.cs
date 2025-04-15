@@ -46,6 +46,8 @@ void StartScene()
                 // 인벤토리
                 break;
             case 3:
+                Console.Clear();
+                Shop();
                 // 상점
                 break;
         }
@@ -175,6 +177,66 @@ void EquipManage()
         EquipManage();
     }
 }
+void Shop()
+{
+    Console.WriteLine("-상점-\n보유 중인 아이템을 확인합니다.\n");
+    Console.WriteLine("\n[보유 골드]\n{0} G\n", player1.gold);
+    Console.WriteLine("\n[아이템 목록]\n");
+    int[] price = new int[6];
+    for (int i = 0; i < 6; i++)
+    {
+        switch(i)
+        {
+            case 0:
+                Console.WriteLine("- 수련자 갑옷     | 방어력 +5 | 수련에 도움을 주는 갑옷입니다.    | 1000 G");
+                price[i] = 1000;
+                break;
+            case 1:
+                Console.WriteLine("- 무쇠갑옷     | 방어력 +9 | 무쇠로 만들어져 튼튼한 갑옷입니다.    | 2000 G");
+                price[i] = 2000;
+                break;
+            case 2:
+                Console.WriteLine("- 스파르타의 갑옷 | 방어력 +15 | 스파르타의 전사들이 사용했다고 전해지는 전설의 갑옷입니다.    | 3500 G");
+                price[i] = 3500;
+                break;
+            case 3:
+                Console.WriteLine("- 낡은 검     | 공격력 +2 | 쉽게 찾을 수 있는 낡은 검입니다.    | 600 G");
+                price[i] = 600;
+                break;
+            case 4:
+                Console.WriteLine("- 청동 도끼     | 공격력 +5 | 옛날부터 전해내려오는 사용감있는 도끼입니다.    | 1500 G");
+                price[i] = 1500;
+                break;
+            case 5:
+                Console.WriteLine("- 스파르타의 창     | 공격력 +9 | 스파르타의 전사들이 사용했다고 전해지는 전설의 창입니다.    | 3000 G");
+                price[i] = 3000;
+                break;
+
+        }
+    }
+    Console.WriteLine("\n1. 아이템 구매\n0. 나가기");
+    Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+    string input = Console.ReadLine();
+    int num = 0;
+    num = int.Parse(input);
+    if (num == 1)
+    {
+        Console.Clear();
+        // 아이템 구매창 이동
+    }
+    else if (num == 0)
+    {
+        Console.Clear();
+        StartScene();
+        // 시작 화면
+    }
+    else
+    {
+        Console.Clear();
+        Console.WriteLine("잘못된 입력입니다.\n");
+        Inventory();
+    }
+}
 void AddItem(int itemCode, int invenNum)
 {
     switch(itemCode)
@@ -234,7 +296,8 @@ struct Item()
     public bool armor;      // 무기여부
     public bool weapon;     // 방어구여부
     public int addPower;    // (무기면 공격력, 방어구면 방어력) 추가 상승치
-    public string itemInfo;
+    public string itemInfo; // 장비 설명
+    public int price;       // 가격
 }
 
 
