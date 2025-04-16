@@ -7,7 +7,7 @@
     public int addAtkPower = 0;
     public int armPower = 5;
     public int addArmPower = 0;
-    public int hp = 100;
+    public int hp = 10000;
     public int gold = 1500;
 }
 struct Item()
@@ -27,6 +27,7 @@ class TextRPG
         Player player1 = new Player();
         Item[] invenTory = new Item[20];
         bool[] shop_Soldout = new bool[6];
+        bool get_BalMoong = false; // 히든 아이템 획득 여부
         int num = 0;
         Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
 
@@ -531,13 +532,32 @@ class TextRPG
                 if (dungeonName == "미확인생명체 발견지역")
                     addGold = 1700;
                 if (dungeonName == "용이 점령한 황무지")
+                {
                     addGold = 2500;
+
+                }
                 addGold += addGold * (random.Next(player1.atkPower, player1.atkPower * 2 + 1)) / 100;
+                int hiddenWeapon = random.Next(99);
+                if (get_BalMoong == false)
+                {
+                    if (hiddenWeapon < 10)
+                    {
+                        for (int i = 0; i < invenTory.Length; i++)
+                        {
+                            if (invenTory[i].name == null)
+                                AddItem(7, i);      // 발뭉 획득!
+                            get_BalMoong = true;
+                            Console.WriteLine("히든 무기 \"멸룡검 발뭉\" 을 획득하였습니다!!\n");
+                            break;
+                        }
+                    }
+                }
             }
             else
             {
                 downHp /= 2;    // 실패 시 체력 감소량 절반
                 addGold = 0;
+
             }
             Console.WriteLine("체력 {0} -> {1}", player1.hp, player1.hp - downHp);
             Console.WriteLine("골드 {0} -> {1}", player1.gold, player1.gold + addGold);
