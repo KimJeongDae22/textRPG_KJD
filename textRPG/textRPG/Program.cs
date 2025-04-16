@@ -8,7 +8,7 @@
     public int armPower = 5;
     public int addArmPower = 0;
     public int hp = 100;
-    public int gold = 150000;
+    public int gold = 1500;
 }
 struct Item()
 {
