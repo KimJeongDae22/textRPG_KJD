@@ -463,22 +463,31 @@ class TextRPG
             {
                 if (num >= 1 && num <= 3)
                 {
-                    bool dungeonClear;
-                    Random random = new Random();
-                    int clearPercent = random.Next(99);
-                    if (player1.armPower >= dungeonArmPower[num - 1])
+                    if (player1.hp > 0)
                     {
-                        dungeonClear = true;
+                        bool dungeonClear;
+                        Random random = new Random();
+                        int clearPercent = random.Next(99);
+                        if (player1.armPower >= dungeonArmPower[num - 1])
+                        {
+                            dungeonClear = true;
+                        }
+                        else
+                        {
+                            if (clearPercent < 40)
+                                dungeonClear = true;
+                            else
+                                dungeonClear = false;
+                        }
+                        Console.Clear();
+                        ResultDungeon(dungeonClear, dungeonName[num - 1], dungeonArmPower[num - 1]);
                     }
                     else
                     {
-                        if (clearPercent < 40)
-                            dungeonClear = true;
-                        else
-                            dungeonClear = false;
+                        Console.Clear();
+                        Console.WriteLine("체력이 부족합니다.\n");
+                        Dungeon();
                     }
-                    Console.Clear();
-                    ResultDungeon(dungeonClear, dungeonName[num-1], dungeonArmPower[num-1]);
                 }
                 else if (num == 0)
                 {
@@ -492,9 +501,17 @@ class TextRPG
                     Dungeon();
                 }
             }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("잘못된 입력입니다.\n");
+                Dungeon();
+            }
         }
         void ResultDungeon(bool dungeonClear, string dungeonName, int dungeonArmPower)
         {
+            // Dungeon 메서드에서 받은 던전 클리어 여부, 던전 이름, 던전 권장 방어력이 매개 변수로써 존재한다.
+
             Console.WriteLine("- {0} -\n", dungeonClear ? "던전 클리어 성공!" : "던전 클리어 실패...");
             Console.WriteLine("{0}", dungeonClear ? $"축하합니다!!\n{dungeonName} 던전을 클리어 하였습니다.\n"
                 : $"아쉽습니다...\n{dungeonName} 던전을 클리어하지 못했습니다.\n");
@@ -522,7 +539,7 @@ class TextRPG
                 downHp /= 2;    // 실패 시 체력 감소량 절반
                 addGold = 0;
             }
-            Console.WriteLine("체력 {0} -> {1}",player1.hp, player1.hp - downHp);
+            Console.WriteLine("체력 {0} -> {1}", player1.hp, player1.hp - downHp);
             Console.WriteLine("골드 {0} -> {1}", player1.gold, player1.gold + addGold);
             player1.hp -= downHp;
             player1.gold += addGold;
