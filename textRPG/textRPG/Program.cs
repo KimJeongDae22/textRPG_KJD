@@ -56,26 +56,35 @@ class TextRPG
             Console.WriteLine("1. 상태보기 \n2. 인벤토리 \n3. 상점 \n");
             Console.WriteLine("원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
-            num = int.Parse(input);
-            if (num >= 1 && num <= 3)
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
             {
-                switch (num)
+                if (num >= 1 && num <= 3)
                 {
-                    case 1:
-                        Console.Clear();
-                        Information();
-                        // 상태보기
-                        break;
-                    case 2:
-                        Console.Clear();
-                        Inventory();
-                        // 인벤토리
-                        break;
-                    case 3:
-                        Console.Clear();
-                        Shop();
-                        // 상점
-                        break;
+                    switch (num)
+                    {
+                        case 1:
+                            Console.Clear();
+                            Information();
+                            // 상태보기
+                            break;
+                        case 2:
+                            Console.Clear();
+                            Inventory();
+                            // 인벤토리
+                            break;
+                        case 3:
+                            Console.Clear();
+                            Shop();
+                            // 상점
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    StartScene();
                 }
             }
             else
