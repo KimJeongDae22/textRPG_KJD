@@ -53,13 +53,13 @@ class TextRPG
         void StartScene()
         {
             Console.WriteLine("환영합니다! {0} 님. 이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.\n", player1.name);
-            Console.WriteLine("1. 상태보기 \n2. 인벤토리 \n3. 상점 \n");
-            Console.WriteLine("원하시는 행동을 입력해주세요.");
+            Console.WriteLine("1. 상태보기 \n2. 인벤토리 \n3. 상점 \n4. 던전가기");
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
             bool isnum = int.TryParse(input, out num);
             if (isnum)
             {
-                if (num >= 1 && num <= 3)
+                if (num >= 1 && num <= 4)
                 {
                     switch (num)
                     {
@@ -77,6 +77,11 @@ class TextRPG
                             Console.Clear();
                             Shop();
                             // 상점
+                            break;
+                        case 4:
+                            Console.Clear();
+                            Dungeon();
+                            // 던전
                             break;
                     }
                 }
@@ -110,12 +115,20 @@ class TextRPG
             Console.WriteLine("\n0. 나가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
-            int num = 1;
-            num = int.Parse(input);
-            if (num == 0)
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
             {
-                Console.Clear();
-                StartScene();
+                if (num == 0)
+                {
+                    Console.Clear();
+                    StartScene();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    Information();
+                }
             }
             else
             {
@@ -146,22 +159,30 @@ class TextRPG
             Console.WriteLine("\n1. 장착 관리\n2. 나가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
-            int num = 0;
-            num = int.Parse(input);
-            if (num >= 1 && num <= 2)
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
             {
-                switch (num)
+                if (num >= 1 && num <= 2)
                 {
-                    case 1:
-                        Console.Clear();
-                        EquipManage();
-                        // 장착 관리
-                        break;
-                    case 2:
-                        Console.Clear();
-                        StartScene();
-                        // 시작 화면
-                        break;
+                    switch (num)
+                    {
+                        case 1:
+                            Console.Clear();
+                            EquipManage();
+                            // 장착 관리
+                            break;
+                        case 2:
+                            Console.Clear();
+                            StartScene();
+                            // 시작 화면
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    Inventory();
                 }
             }
             else
@@ -193,33 +214,41 @@ class TextRPG
             Console.WriteLine("\n0. 나가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
-            int num = 0;
-            num = int.Parse(input);
-            if (num >= 1 && invenTory[num - 1].name != null)
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
             {
-                Console.Clear();
-                invenTory[num - 1].isEquip = !invenTory[num - 1].isEquip;
-                if (invenTory[num - 1].isEquip == true)
+                if (num >= 1 && invenTory[num - 1].name != null)
                 {
-                    if (invenTory[num - 1].weapon == true)
-                        player1.addAtkPower += invenTory[num - 1].addPower;
-                    if (invenTory[num - 1].armor == true)
-                        player1.addArmPower += invenTory[num - 1].addPower;
+                    Console.Clear();
+                    invenTory[num - 1].isEquip = !invenTory[num - 1].isEquip;
+                    if (invenTory[num - 1].isEquip == true)
+                    {
+                        if (invenTory[num - 1].weapon == true)
+                            player1.addAtkPower += invenTory[num - 1].addPower;
+                        if (invenTory[num - 1].armor == true)
+                            player1.addArmPower += invenTory[num - 1].addPower;
+                    }
+                    else
+                    {
+                        if (invenTory[num - 1].weapon == true)
+                            player1.addAtkPower -= invenTory[num - 1].addPower;
+                        if (invenTory[num - 1].armor == true)
+                            player1.addArmPower -= invenTory[num - 1].addPower;
+                    }
+                    Console.WriteLine("{0} 장비를 {1}했습니다.\n", invenTory[num - 1].name, invenTory[num - 1].isEquip ? "장착" : "해제");
+                    EquipManage();
+                }
+                else if (num == 0)
+                {
+                    Console.Clear();
+                    StartScene();
                 }
                 else
                 {
-                    if (invenTory[num - 1].weapon == true)
-                        player1.addAtkPower -= invenTory[num - 1].addPower;
-                    if (invenTory[num - 1].armor == true)
-                        player1.addArmPower -= invenTory[num - 1].addPower;
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    EquipManage();
                 }
-                Console.WriteLine("{0} 장비를 {1}했습니다.\n", invenTory[num - 1].name, invenTory[num - 1].isEquip ? "장착" : "해제");
-                EquipManage();
-            }
-            else if (num == 0)
-            {
-                Console.Clear();
-                StartScene();
             }
             else
             {
@@ -272,19 +301,27 @@ class TextRPG
             Console.WriteLine("\n1. 아이템 구매\n0. 나가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
-            int num = 0;
-            num = int.Parse(input);
-            if (num == 1)
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
             {
-                Console.Clear();
-                BuyItem();
-                // 아이템 구매창 이동
-            }
-            else if (num == 0)
-            {
-                Console.Clear();
-                StartScene();
-                // 시작 화면
+                if (num == 1)
+                {
+                    Console.Clear();
+                    BuyItem();
+                    // 아이템 구매창 이동
+                }
+                else if (num == 0)
+                {
+                    Console.Clear();
+                    StartScene();
+                    // 시작 화면
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    Shop();
+                }
             }
             else
             {
@@ -336,52 +373,182 @@ class TextRPG
             Console.WriteLine("\n0. 나가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
-            int num = 0;
-            num = int.Parse(input);
-            if (num >= 1 && num <= 6)
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
             {
-                if (shop_Soldout[num - 1] == true)
+                if (num >= 1 && num <= 6)
                 {
-                    Console.Clear();
-                    Console.WriteLine("이미 구매한 아이템입니다.\n");
-                    BuyItem();
+                    if (shop_Soldout[num - 1] == true)
+                    {
+                        Console.Clear();
+                        Console.WriteLine("이미 구매한 아이템입니다.\n");
+                        BuyItem();
+                    }
+                    else if (player1.gold < price[num - 1])
+                    {
+                        Console.Clear();
+                        Console.WriteLine("골드가 부족합니다.\n");
+                        BuyItem();
+                    }
+                    else
+                    {
+                        int emptyInvenNum = 0;
+                        for (int i = 0; i < invenTory.Length; i++)
+                        {
+                            if (invenTory[i].name == null)
+                            {
+                                emptyInvenNum = i;
+                                break;
+                            }
+                        }
+                        AddItem(num, emptyInvenNum);
+                        player1.gold -= price[num - 1];
+                        shop_Soldout[num - 1] = true;
+                        Console.Clear();
+                        Console.WriteLine("{0} 구매를 완료했습니다.\n", invenTory[emptyInvenNum].name);
+                        BuyItem();
+                    }
+
                 }
-                else if (player1.gold < price[num - 1])
+                else if (num == 0)
                 {
                     Console.Clear();
-                    Console.WriteLine("골드가 부족합니다.\n");
-                    BuyItem();
+                    Shop();
                 }
                 else
                 {
-                    int emptyInvenNum = 0;
-                    for (int i = 0; i < invenTory.Length; i++)
-                    {
-                        if (invenTory[i].name == null)
-                        {
-                            emptyInvenNum = i;
-                            break;
-                        }
-                    }
-                    AddItem(num, emptyInvenNum);
-                    player1.gold -= price[num - 1];
-                    shop_Soldout[num - 1] = true;
                     Console.Clear();
-                    Console.WriteLine("{0} 구매를 완료했습니다.\n", invenTory[emptyInvenNum].name);
-                    BuyItem();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    Shop();
                 }
-
-            }
-            else if (num == 0)
-            {
-                Console.Clear();
-                Shop();
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine("잘못된 입력입니다.\n");
                 Shop();
+            }
+        }
+        void Dungeon()
+        {
+            Console.WriteLine("-던전 입장-\n이곳에서 들어갈 수 있는 던전이 표시됩니다.\n");
+            int[] dungeonArmPower = new int[3];
+            string[] dungeonName = new string[3];
+            for (int i = 1; i <= 3; i++)
+            {
+                switch (i)
+                {
+                    case 1:
+                        Console.WriteLine("{0}. 꼬마 슬라임 둥지       | 방어력 +5 이상 권장", i);
+                        dungeonArmPower[i - 1] = 5;
+                        dungeonName[i - 1] = "꼬마 슬라임 둥지";
+                        break;
+                    case 2:
+                        Console.WriteLine("{0}. 미확인생명체 발견지역  | 방어력 +12 이상 권장", i);
+                        dungeonArmPower[i - 1] = 12;
+                        dungeonName[i - 1] = "미확인생명체 발견지역";
+                        break;
+                    case 3:
+                        Console.WriteLine("{0}. 용이 점령한 황무지     | 방어력 +20 이상 권장", i);
+                        dungeonArmPower[i - 1] = 20;
+                        dungeonName[i - 1] = "용이 점령한 황무지";
+                        break;
+                }
+            }
+            Console.WriteLine("0. 나가기");
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+            string input = Console.ReadLine();
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
+            {
+                if (num >= 1 && num <= 3)
+                {
+                    bool dungeonClear;
+                    Random random = new Random();
+                    int clearPercent = random.Next(99);
+                    if (player1.armPower >= dungeonArmPower[num - 1])
+                    {
+                        dungeonClear = true;
+                    }
+                    else
+                    {
+                        if (clearPercent < 40)
+                            dungeonClear = true;
+                        else
+                            dungeonClear = false;
+                    }
+                    Console.Clear();
+                    ResultDungeon(dungeonClear, dungeonName[num-1], dungeonArmPower[num-1]);
+                }
+                else if (num == 0)
+                {
+                    Console.Clear();
+                    StartScene();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    Dungeon();
+                }
+            }
+        }
+        void ResultDungeon(bool dungeonClear, string dungeonName, int dungeonArmPower)
+        {
+            Console.WriteLine("- {0} -\n", dungeonClear ? "던전 클리어 성공!" : "던전 클리어 실패...");
+            Console.WriteLine("{0}", dungeonClear ? $"축하합니다!!\n{dungeonName} 던전을 클리어 하였습니다.\n"
+                : $"아쉽습니다...\n{dungeonName} 던전을 클리어하지 못했습니다.\n");
+            Console.WriteLine("[탐험 결과]");
+            Random random = new Random();
+            int downHp = 0;
+            int addGold = 0;
+            downHp = random.Next(20, 36) - (player1.armPower - dungeonArmPower);
+            if (downHp < 0)
+                downHp = 0;
+            // 기본 체력 감소량 계산 완료
+            if (dungeonClear == true)
+            {
+
+                if (dungeonName == "꼬마 슬라임 둥지")
+                    addGold = 1000;
+                if (dungeonName == "미확인생명체 발견지역")
+                    addGold = 1700;
+                if (dungeonName == "용이 점령한 황무지")
+                    addGold = 2500;
+                addGold += addGold * (random.Next(player1.atkPower, player1.atkPower * 2 + 1)) / 100;
+            }
+            else
+            {
+                downHp /= 2;    // 실패 시 체력 감소량 절반
+                addGold = 0;
+            }
+            Console.WriteLine("체력 {0} -> {1}",player1.hp, player1.hp - downHp);
+            Console.WriteLine("골드 {0} -> {1}", player1.gold, player1.gold + addGold);
+            player1.hp -= downHp;
+            player1.gold += addGold;
+            Console.WriteLine("\n0. 나가기");
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+            string input = Console.ReadLine();
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
+            {
+                if (num == 0)
+                {
+                    Console.Clear();
+                    Dungeon();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    ResultDungeon(dungeonClear, dungeonName, dungeonArmPower);
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("잘못된 입력입니다.\n");
+                ResultDungeon(dungeonClear, dungeonName, dungeonArmPower);
             }
         }
         void AddItem(int itemCode, int invenNum)
@@ -423,6 +590,12 @@ class TextRPG
                     invenTory[invenNum].weapon = true;
                     invenTory[invenNum].addPower = 9;
                     invenTory[invenNum].itemInfo = "스파르타의 전사들이 사용했다고 전해지는 전설의 창입니다.";
+                    break;
+                case 7:
+                    invenTory[invenNum].name = "멸룡검 발뭉";
+                    invenTory[invenNum].weapon = true;
+                    invenTory[invenNum].addPower = 30;
+                    invenTory[invenNum].itemInfo = "단 하나, 용을 멸하는 것만 생각한다.";
                     break;
             }
         }
