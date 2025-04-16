@@ -1,14 +1,26 @@
 ﻿struct Player()
 {
     public int level = 1;
+    public int exp = 0;
     public string name = "char";
     public string jop = "전사";
-    public int atkPower = 10;
+    public float atkPower = 10;
     public int addAtkPower = 0;
     public int armPower = 5;
     public int addArmPower = 0;
     public int hp = 100;
     public int gold = 1500;
+    public void LevelUP_Check()
+    {
+        if (exp == level)
+        {
+            exp = 0;
+            level += 1;
+            atkPower += 0.5f;
+            armPower += 1;
+            Console.WriteLine("레벨 업! 레벨 {0} 달성하였습니다.\n", level);
+        }
+    }
 }
 struct Item()
 {
@@ -111,7 +123,7 @@ class TextRPG
 
             Console.WriteLine("Lv.{0}", player1.level.ToString("D2"));
             Console.WriteLine("이름 : {0} ( {1} )", player1.name, player1.jop);
-            Console.Write("공격력 : {0}", player1.atkPower + player1.addAtkPower);
+            Console.Write("공격력 : {0}", (player1.atkPower + player1.addAtkPower).ToString("N1"));
             Console.WriteLine("  +[{0}]", player1.addAtkPower);
             Console.Write("방어력 : {0}", player1.armPower + player1.addArmPower);
             Console.WriteLine("  +[{0}]", player1.addArmPower);
@@ -517,7 +529,8 @@ class TextRPG
         void ResultDungeon(bool dungeonClear, string dungeonName, int dungeonArmPower)
         {
             // Dungeon 메서드에서 받은 던전 클리어 여부, 던전 이름, 던전 권장 방어력이 매개 변수로써 존재한다.
-
+            player1.exp += 1;
+            player1.LevelUP_Check();
             Console.WriteLine("- {0} -\n", dungeonClear ? "던전 클리어 성공!" : "던전 클리어 실패...");
             Console.WriteLine("{0}", dungeonClear ? $"축하합니다!!\n{dungeonName} 던전을 클리어 하였습니다.\n"
                 : $"아쉽습니다...\n{dungeonName} 던전을 클리어하지 못했습니다.\n");
@@ -557,7 +570,7 @@ class TextRPG
                         }
                     }
                 }
-                addGold += addGold * (random.Next(player1.atkPower, player1.atkPower * 2 + 1)) / 100;
+                addGold += addGold * (random.Next((int)player1.atkPower, (int)player1.atkPower * 2 + 1)) / 100;
             }
             else
             {
