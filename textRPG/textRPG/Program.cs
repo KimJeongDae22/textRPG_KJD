@@ -91,9 +91,9 @@ class TextRPG
 
             Console.WriteLine("Lv.{0}", player1.level.ToString("D2"));
             Console.WriteLine("이름 : {0} ( {1} )", player1.name, player1.jop);
-            Console.Write("공격력 : {0}", player1.atkPower);
+            Console.Write("공격력 : {0}", player1.atkPower + player1.addAtkPower);
             Console.WriteLine("  +[{0}]", player1.addAtkPower);
-            Console.Write("방어력 : {0}", player1.armPower);
+            Console.Write("방어력 : {0}", player1.armPower + player1.addArmPower);
             Console.WriteLine("  +[{0}]", player1.addArmPower);
             Console.WriteLine("체력 : {0}", player1.hp);
             Console.WriteLine("골드 : {0}", player1.gold);
