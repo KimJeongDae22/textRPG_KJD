@@ -7,8 +7,8 @@
     public int addAtkPower = 0;
     public int armPower = 5;
     public int addArmPower = 0;
-    public int hp = 10000;
-    public int gold = 1500;
+    public int hp = 100;
+    public int gold = 150000;
 }
 struct Item()
 {
@@ -31,7 +31,7 @@ class TextRPG
         int num = 0;
         Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
 
-        //AddItem(1, 0);  //테스트용 장비 지급
+        //AddItem(7, 6);      // 발뭉 획득!  //테스트용 장비 지급
         StartNaming();
         StartScene();
 
@@ -54,13 +54,13 @@ class TextRPG
         void StartScene()
         {
             Console.WriteLine("환영합니다! {0} 님. 이곳에서 던전으로 들어가기 전 활동을 할 수 있습니다.\n", player1.name);
-            Console.WriteLine("1. 상태보기 \n2. 인벤토리 \n3. 상점 \n4. 던전가기");
+            Console.WriteLine("1. 상태보기 \n2. 인벤토리 \n3. 상점 \n4. 던전가기 \n5. 휴식하기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
             bool isnum = int.TryParse(input, out num);
             if (isnum)
             {
-                if (num >= 1 && num <= 4)
+                if (num >= 1 && num <= 5)
                 {
                     switch (num)
                     {
@@ -83,6 +83,11 @@ class TextRPG
                             Console.Clear();
                             Dungeon();
                             // 던전
+                            break;
+                        case 5:
+                            Console.Clear();
+                            Rest();
+                            // 휴식
                             break;
                     }
                 }
@@ -420,19 +425,19 @@ class TextRPG
                 {
                     Console.Clear();
                     Console.WriteLine("잘못된 입력입니다.\n");
-                    Shop();
+                    BuyItem();
                 }
             }
             else
             {
                 Console.Clear();
                 Console.WriteLine("잘못된 입력입니다.\n");
-                Shop();
+                BuyItem();
             }
         }
         void Dungeon()
         {
-            Console.WriteLine("-던전 입장-\n이곳에서 들어갈 수 있는 던전이 표시됩니다.\n");
+            Console.WriteLine("-던전 입장-\n이곳에서 들어갈 수 있는 던전이 표시됩니다.  [현재 방어력 : {0}]\n", player1.armPower + player1.addArmPower);
             int[] dungeonArmPower = new int[3];
             string[] dungeonName = new string[3];
             for (int i = 1; i <= 3; i++)
@@ -469,7 +474,7 @@ class TextRPG
                         bool dungeonClear;
                         Random random = new Random();
                         int clearPercent = random.Next(99);
-                        if (player1.armPower >= dungeonArmPower[num - 1])
+                        if (player1.armPower + player1.addArmPower >= dungeonArmPower[num - 1])
                         {
                             dungeonClear = true;
                         }
@@ -520,7 +525,7 @@ class TextRPG
             Random random = new Random();
             int downHp = 0;
             int addGold = 0;
-            downHp = random.Next(20, 36) - (player1.armPower - dungeonArmPower);
+            downHp = random.Next(20, 36) - (player1.armPower + player1.addArmPower - dungeonArmPower);
             if (downHp < 0)
                 downHp = 0;
             // 기본 체력 감소량 계산 완료
@@ -534,24 +539,25 @@ class TextRPG
                 if (dungeonName == "용이 점령한 황무지")
                 {
                     addGold = 2500;
-
-                }
-                addGold += addGold * (random.Next(player1.atkPower, player1.atkPower * 2 + 1)) / 100;
-                int hiddenWeapon = random.Next(99);
-                if (get_BalMoong == false)
-                {
-                    if (hiddenWeapon < 10)
+                    if (get_BalMoong == false)
                     {
-                        for (int i = 0; i < invenTory.Length; i++)
+                        int hiddenWeapon = random.Next(99);
+                        if (hiddenWeapon < 10)
                         {
-                            if (invenTory[i].name == null)
-                                AddItem(7, i);      // 발뭉 획득!
-                            get_BalMoong = true;
-                            Console.WriteLine("히든 무기 \"멸룡검 발뭉\" 을 획득하였습니다!!\n");
-                            break;
+                            for (int i = 0; i < invenTory.Length; i++)
+                            {
+                                if (invenTory[i].name == null)
+                                {
+                                    AddItem(7, i);      // 발뭉 획득!
+                                    get_BalMoong = true;
+                                    Console.WriteLine("\n히든 무기 \"멸룡검 발뭉\" 을 획득하였습니다!!\n");
+                                    break;
+                                }
+                            }
                         }
                     }
                 }
+                addGold += addGold * (random.Next(player1.atkPower, player1.atkPower * 2 + 1)) / 100;
             }
             else
             {
@@ -634,6 +640,65 @@ class TextRPG
                     invenTory[invenNum].addPower = 30;
                     invenTory[invenNum].itemInfo = "단 하나, 용을 멸하는 것만 생각한다.";
                     break;
+            }
+        }
+        void Rest()
+        {
+            Console.WriteLine("-휴식하기-\n500 G 를 내면 체력을 회복할 수 있습니다. (보유 골드 : {0} G)\n", player1.gold);
+            Console.WriteLine("\n1. 휴식하기 \n0. 나가기");
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+            string input = Console.ReadLine();
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
+            {
+                if (num >= 0 && num <= 1)
+                {
+                    switch (num)
+                    {
+                        case 0:
+                            Console.Clear();
+                            StartScene();
+                            // 시작 화면
+                            break;
+                        case 1:
+                            if (player1.gold >= 500)
+                            {
+                                if (player1.hp < 100)
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("휴식을 완료하였습니다.\n");
+                                    player1.hp = 100;
+                                    player1.gold -= 500;
+                                    Rest();
+                                }
+                                else
+                                {
+                                    Console.Clear();
+                                    Console.WriteLine("이미 체력이 가득찬 상태입니다.\n");
+                                    Rest();
+                                }
+                            }
+                            else
+                            {
+                                Console.Clear();
+                                Console.WriteLine("골드가 부족합니다.\n");
+                                Rest();
+                            }
+                            break;
+                    }
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    Rest();
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("잘못된 입력입니다.\n");
+                Rest();
             }
         }
     }
