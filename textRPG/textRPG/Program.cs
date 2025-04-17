@@ -43,7 +43,7 @@ class TextRPG
         int num = 0;
         Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
 
-        //AddItem(7, 6);      // 발뭉 획득!  //테스트용 장비 지급
+        AddItem(7, 6);      //테스트용 장비 지급
         StartNaming();
         StartScene();
 
@@ -316,17 +316,28 @@ class TextRPG
                 else
                     Console.WriteLine("구매 완료");
             }
-            Console.WriteLine("\n1. 아이템 구매\n0. 나가기");
+            Console.WriteLine("\n1. 아이템 구매\n2. 아이템 판매\n0. 나가기");
             Console.WriteLine("\n원하시는 행동을 입력해주세요.");
             string input = Console.ReadLine();
             bool isnum = int.TryParse(input, out num);
             if (isnum)
             {
-                if (num == 1)
+                if (num >= 1 && num <= 2)
                 {
-                    Console.Clear();
-                    BuyItem();
-                    // 아이템 구매창 이동
+                    switch (num)
+                    {
+                        case 1:
+                            Console.Clear();
+                            BuyItem();
+                            // 아이템 구매창 이동
+                            break;
+                        case 2:
+                            Console.Clear();
+                            SellItem();
+                            // 아이템 판매창 이동
+                            break;
+
+                    }
                 }
                 else if (num == 0)
                 {
@@ -420,6 +431,7 @@ class TextRPG
                             }
                         }
                         AddItem(num, emptyInvenNum);
+                        invenTory[emptyInvenNum].price = price[num - 1];
                         player1.gold -= price[num - 1];
                         shop_Soldout[num - 1] = true;
                         Console.Clear();
@@ -445,6 +457,79 @@ class TextRPG
                 Console.Clear();
                 Console.WriteLine("잘못된 입력입니다.\n");
                 BuyItem();
+            }
+        }
+        void SellItem()
+        {
+            Console.WriteLine("-아이템 판매-\n보유 중인 아이템 중에서 원하는 것을 판매할 수 있습니다.\n판매하고 싶은 장비에 해당하는 숫자를 입력하면 됩니다.\n");
+            Console.WriteLine("\n[보유 골드]\n{0} G\n", player1.gold);
+            Console.WriteLine("\n[아이템 목록]\n");
+            for (int i = 0; i < invenTory.Length; i++)
+            {
+                if (invenTory[i].name != null)
+                {
+                    Console.Write("- {0}. ", i + 1);
+                    if (invenTory[i].isEquip == true)   // 장착 시 [E] 글귀 생성
+                        Console.Write("[E]");
+                    Console.Write("{0}  ", invenTory[i].name);
+                    if (invenTory[i].armor == true)
+                        Console.Write("| 방어력 +{0} | ", invenTory[i].addPower);
+                    if (invenTory[i].weapon == true)
+                        Console.Write("| 공격력 +{0} | ", invenTory[i].addPower);
+                    Console.Write("{0} |", invenTory[i].itemInfo);
+
+                    Console.WriteLine(" {0}", invenTory[i].price > 0 ? invenTory[i].price + " G" : "판매 불가");
+                }
+            }
+            Console.WriteLine("\n0. 나가기");
+            Console.WriteLine("\n원하시는 행동을 입력해주세요.");
+            string input = Console.ReadLine();
+            bool isnum = int.TryParse(input, out num);
+            if (isnum)
+            {
+                if (num >= 1 && invenTory[num - 1].name != null)
+                {
+                    if (invenTory[num - 1].price > 0)
+                    {
+                        player1.gold += invenTory[num - 1].price * 85 / 100;
+
+                        if (invenTory[num - 1].isEquip == true)
+                        {
+                            if (invenTory[num - 1].weapon == true)
+                                player1.addAtkPower -= invenTory[num - 1].addPower;
+                            if (invenTory[num - 1].armor == true)
+                                player1.addArmPower -= invenTory[num - 1].addPower;
+                        }
+                        Console.Clear();
+                        Console.WriteLine("{0} 장비를 판매했습니다.\n", invenTory[num - 1].name);
+
+                        invenTory[num - 1] = new Item();
+                        SellItem();
+                    }
+                    else
+                    {
+                        Console.Clear();
+                        Console.WriteLine("판매할 수 없는 아이템입니다.\n");
+                        SellItem();
+                    }
+                }
+                else if (num == 0)
+                {
+                    Console.Clear();
+                    Shop();
+                }
+                else
+                {
+                    Console.Clear();
+                    Console.WriteLine("잘못된 입력입니다.\n");
+                    SellItem();
+                }
+            }
+            else
+            {
+                Console.Clear();
+                Console.WriteLine("잘못된 입력입니다.\n");
+                SellItem();
             }
         }
         void Dungeon()
