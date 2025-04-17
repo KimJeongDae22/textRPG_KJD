@@ -1,4 +1,6 @@
-﻿struct Player()
+﻿using System;
+
+struct Player()
 {
     public int level = 1;
     public int exp = 0;
@@ -31,6 +33,24 @@ struct Item()
     public int addPower;    // (무기면 공격력, 방어구면 방어력) 추가 상승치
     public string itemInfo; // 장비 설명
     public int price;       // 가격
+
+    public void On_Off(int addAtkPower, int addArmPower)
+    {
+        if (isEquip == true)
+        {
+            if (weapon == true)
+                addAtkPower += addPower;
+            if (armor == true)
+                addArmPower += addPower;
+        }
+        else
+        {
+            if (weapon == true)
+                addAtkPower -= addPower;
+            if (armor == true)
+                addArmPower -= addPower;
+        }
+    }
 }
 class TextRPG
 {
@@ -43,7 +63,7 @@ class TextRPG
         int num = 0;
         Console.WriteLine("스파르타 마을에 오신 여러분 환영합니다.");
 
-        AddItem(7, 6);      //테스트용 장비 지급
+        //AddItem(7, 6);      //테스트용 장비 지급. 테스트 중이 아닐 경우 주석 처리
         StartNaming();
         StartScene();
 
@@ -239,20 +259,33 @@ class TextRPG
                 {
                     Console.Clear();
                     invenTory[num - 1].isEquip = !invenTory[num - 1].isEquip;
+                    invenTory[num - 1].On_Off(player1.addAtkPower, player1.addArmPower);
                     if (invenTory[num - 1].isEquip == true)
                     {
-                        if (invenTory[num - 1].weapon == true)
-                            player1.addAtkPower += invenTory[num - 1].addPower;
-                        if (invenTory[num - 1].armor == true)
-                            player1.addArmPower += invenTory[num - 1].addPower;
-                    }
-                    else
-                    {
-                        if (invenTory[num - 1].weapon == true)
-                            player1.addAtkPower -= invenTory[num - 1].addPower;
-                        if (invenTory[num - 1].armor == true)
-                            player1.addArmPower -= invenTory[num - 1].addPower;
-                    }
+                        for (int i = 0; i < invenTory.Length; i++)
+                        {
+                            if (i != num - 1)
+                            {
+                                if (invenTory[i].isEquip == true)
+                                {
+                                    if (invenTory[num - 1].weapon == invenTory[i].weapon)
+                                    {
+                                        invenTory[i].isEquip = false;
+                                        invenTory[i].On_Off(player1.addAtkPower, player1.addArmPower);
+                                        Console.WriteLine("{0} 장비를 {1}했습니다.", invenTory[i].name, invenTory[i].isEquip ? "장착" : "해제");
+                                        break; // 아래 방어구 부위의 경우와 중복 실행을 막기 위해
+                                    }
+                                    if (invenTory[num - 1].armor == invenTory[i].armor)
+                                    {
+                                        invenTory[i].isEquip = false;
+                                        invenTory[i].On_Off(player1.addAtkPower, player1.addArmPower);
+                                        Console.WriteLine("{0} 장비를 {1}했습니다.", invenTory[i].name, invenTory[i].isEquip ? "장착" : "해제");
+                                        break;
+                                    }
+                                }
+                            }
+                        }
+                    }   // 한 부위에 중복 장비 착용 해제 코드
                     Console.WriteLine("{0} 장비를 {1}했습니다.\n", invenTory[num - 1].name, invenTory[num - 1].isEquip ? "장착" : "해제");
                     EquipManage();
                 }
